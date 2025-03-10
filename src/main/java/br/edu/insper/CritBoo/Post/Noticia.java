@@ -1,4 +1,4 @@
-package br.edu.insper.CritBoo;
+package br.edu.insper.CritBoo.Post;
 
 import java.time.LocalDateTime;
 

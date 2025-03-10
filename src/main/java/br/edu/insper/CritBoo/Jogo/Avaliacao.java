@@ -1,4 +1,6 @@
-package br.edu.insper.CritBoo;
+package br.edu.insper.CritBoo.Jogo;
+
+import br.edu.insper.CritBoo.Usuario.Usuario;
 
 import java.time.LocalDateTime;
 

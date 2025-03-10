@@ -1,4 +1,4 @@
-package br.edu.insper.CritBoo;
+package br.edu.insper.CritBoo.Jogo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
