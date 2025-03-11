@@ -1,6 +1,7 @@
 package br.edu.insper.CritBoo.Jogo;
 
 import br.edu.insper.CritBoo.Categoria.Categoria;
+import br.edu.insper.CritBoo.Jogo.estudio.Estudio;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
