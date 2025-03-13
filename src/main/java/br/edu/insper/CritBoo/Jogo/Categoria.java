@@ -1,4 +1,4 @@
-package br.edu.insper.CritBoo.Categoria;
+package br.edu.insper.CritBoo.Jogo;
 
 public class Categoria {
     private String nomeCategoria;
