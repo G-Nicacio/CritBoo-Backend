@@ -12,7 +12,7 @@ public class NoticiaController {
     private NoticiaService noticiaService;
 
     @GetMapping("/noticia")
-    public HashMap<String, Noticia> getNoticias() {
+    public HashMap<Integer, Noticia> getNoticias() {
         return noticiaService.getNoticias();
     }
 
@@ -41,13 +41,13 @@ public class NoticiaController {
     }
 
     @GetMapping("/noticia/{id}")
-    public Noticia getNoticia(@PathVariable long id) {
+    public Noticia getNoticia(@PathVariable Integer id) {
         return noticiaService.getNoticia(id);
     }
 
     @DeleteMapping("/noticia/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String excluirNoticia(@PathVariable long id) {
+    public String excluirNoticia(@PathVariable Integer id) {
         Noticia noticia = noticiaService.deleteNoticia(id);
         if (noticia != null) {
             return "Noticia removida com sucesso";
@@ -56,7 +56,7 @@ public class NoticiaController {
     }
 
     @PutMapping("/noticia/{id}")
-    public String editarNoticia(@PathVariable long id, @RequestBody Noticia noticia) {
+    public String editarNoticia(@PathVariable Integer id, @RequestBody Noticia noticia) {
 
         Noticia noticiaretorno = noticiaService.editarNoticia(id, noticia);
         if (noticiaretorno != null) {

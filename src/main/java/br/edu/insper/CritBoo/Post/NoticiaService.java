@@ -10,25 +10,25 @@ import java.util.HashMap;
 @Service
 public class NoticiaService {
 
-    private HashMap<String, Noticia> noticias = new HashMap<>();
+    private HashMap<Integer, Noticia> noticias = new HashMap<>();
 
-    public HashMap<String, Noticia> getNoticias () {
+    public HashMap<Integer, Noticia> getNoticias () {
         return noticias;
     }
 
     public void salvarNoticia(Noticia noticia){
-        noticias.put("" + noticia.getId(), noticia);
+        noticias.put(noticia.getId(), noticia);
     }
 
-    public Noticia getNoticia(long id) {
-        return noticias.get("" + id);
+    public Noticia getNoticia(Integer id) {
+        return noticias.get(id);
     }
 
-    public Noticia deleteNoticia(long id) {
-        return noticias.remove("" + id);
+    public Noticia deleteNoticia(Integer id) {
+        return noticias.remove(id);
     }
 
-    public Noticia editarNoticia(long id, Noticia noticia) {
+    public Noticia editarNoticia(Integer id, Noticia noticia) {
         Noticia noticiaEditar = getNoticia(id);
 
         if (noticiaEditar != null) {

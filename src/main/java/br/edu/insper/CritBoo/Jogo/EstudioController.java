@@ -1,6 +1,5 @@
-package br.edu.insper.CritBoo.Jogo.estudio;
+package br.edu.insper.CritBoo.Jogo;
 
-import br.edu.insper.CritBoo.Usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -15,7 +15,7 @@ public class Noticia {
     private String conteudo;
     private LocalDateTime dataNoticia;
     private String fonte;
-    private long id = geraId.nextInt(1000000);
+    private Integer id = geraId.nextInt(1000000);
 
     public String getTitulo() {
         return titulo;
@@ -49,7 +49,7 @@ public class Noticia {
         this.fonte = fonte;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 

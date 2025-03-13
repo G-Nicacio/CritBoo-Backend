@@ -1,9 +1,7 @@
-package br.edu.insper.CritBoo.Jogo.estudio;
+package br.edu.insper.CritBoo.Jogo;
 
-import br.edu.insper.CritBoo.Jogo.Jogo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @Service
