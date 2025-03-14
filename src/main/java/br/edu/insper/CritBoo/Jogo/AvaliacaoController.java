@@ -1,10 +1,9 @@
 package br.edu.insper.CritBoo.Jogo;
-import org.springframework.web.bind.annotation.*;
+
 import br.edu.insper.CritBoo.Usuario.Usuario;
 import br.edu.insper.CritBoo.Usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -15,7 +14,7 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @GetMapping("/avaliacao")
-    public HashMap<Integer, Avaliacao> getAvaliacaos() {
+    public HashMap<Integer, Avaliacao> getAvaliacao() {
         return avaliacaoService.getAvaliacoes();
     }
 
@@ -41,15 +40,4 @@ public class AvaliacaoController {
         }
         return "Avaliação não encontrada";
     }
-
-    @PutMapping("/acaliacao/{id}")
-    public String editarAvaliacao(@PathVariable Integer id, @RequestBody Avaliacao avaliacao) {
-
-        Avaliacao avaliacaoretorno = avaliacaoService.editarAvaliacao(id, avaliacao);
-        if (avaliacaoretorno != null) {
-            return "Jogo alterado com sucesso";
-        }
-        return "Jogo não encontrado";
-    }
-
 }

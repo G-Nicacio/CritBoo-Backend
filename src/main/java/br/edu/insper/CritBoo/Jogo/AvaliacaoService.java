@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 @Service
 public class AvaliacaoService {
-
     @Autowired
     private JogoService jogoService;
 
@@ -52,7 +51,8 @@ public class AvaliacaoService {
             avaliacao.setId(avaliacaoBusca.getId());
             avaliacoes.remove(id);
             avaliacoes.put(avaliacao.getId(), avaliacao);
-        }
+            }
+
         return avaliacaoBusca;
+        }
     }
-}
