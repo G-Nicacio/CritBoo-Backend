@@ -11,6 +11,7 @@ public class CategoriaController {
     @Autowired
     private CategoriaService categoriaService;
 
+
     @GetMapping("/categoria")
     public HashMap<Integer, Categoria> getCategorias(){
         return categoriaService.getCategorias();
