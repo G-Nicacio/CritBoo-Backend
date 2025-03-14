@@ -13,7 +13,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/usuario")
-    public HashMap<String, Usuario> getUsuarios() {
+    public HashMap<Integer, Usuario> getUsuarios() {
         return usuarioService.getUsuarios();
     }
 
@@ -25,32 +25,32 @@ public class UsuarioController {
         }
 
         if (usuario.getEmail() == null) {
-            return "CPF não pode ser nulo";
+            return "Email não pode ser nulo";
         }
 
         usuarioService.salvarUsuario(usuario);
         return "Usuario salvo com sucesso";
     }
 
-    @GetMapping("/usuario/{email}")
-    public Usuario getUsuario(@PathVariable String email) {
-        return usuarioService.getUsuario(email);
+    @GetMapping("/usuario/{id}")
+    public Usuario getUsuario(@PathVariable int id) {
+        return usuarioService.getUsuario(id);
     }
 
-    @DeleteMapping("/usuario/{email}")
+    @DeleteMapping("/usuario/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String excluirUsuario(@PathVariable String email) {
-        Usuario usuario = usuarioService.deleteUsuario(email);
+    public String excluirUsuario(@PathVariable int id) {
+        Usuario usuario = usuarioService.deleteUsuario(id);
         if (usuario != null) {
             return "Usuario removido com sucesso";
         }
         return "Usuario não encontrado";
     }
 
-    @PutMapping("/usuario/{email}")
-    public String editarUsuario(@PathVariable String email, @RequestBody Usuario usuario) {
+    @PutMapping("/usuario/{id}")
+    public String editarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
 
-        Usuario usuarioretorno = usuarioService.editarUsuario(email, usuario);
+        Usuario usuarioretorno = usuarioService.editarUsuario(id, usuario);
         if (usuarioretorno != null) {
             return "Usuario alterado com sucesso";
         }

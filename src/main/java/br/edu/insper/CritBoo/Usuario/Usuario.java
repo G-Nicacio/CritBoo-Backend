@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Usuario {
     private String nome;
+    private int id;
     private String email;
     private String senha;
     private LocalDate dataNascimento;
@@ -15,6 +16,10 @@ public class Usuario {
 
     public String getEmail() {return email;}
 
+    public int getId() {return id;}
+
+    public void setId() {this.id = id;}
+
     public void setEmail(String email) {this.email = email;}
 
     public String getSenha() {return senha;}
@@ -24,6 +29,7 @@ public class Usuario {
     public LocalDate getDataNascimento() {return dataNascimento;}
 
     public void setDataNascimento(LocalDate dataNascimento) {this.dataNascimento = dataNascimento;}
+
 
 //    public Historico getHistorico() {return historico;}
 //

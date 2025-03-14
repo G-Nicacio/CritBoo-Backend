@@ -10,26 +10,26 @@ import java.util.HashMap;
 @Service
 public class UsuarioService {
 
-    private HashMap<String, Usuario> usuarios = new HashMap<>();
+    private HashMap<Integer, Usuario> usuarios = new HashMap<>();
 
-    public HashMap<String, Usuario> getUsuarios () {
+    public HashMap<Integer, Usuario> getUsuarios () {
         return usuarios;
     }
 
     public void salvarUsuario(Usuario usuario){
-        usuarios.put(usuario.getEmail(),usuario);
+        usuarios.put(usuario.getId(),usuario);
     }
 
-    public Usuario getUsuario(String email) {
-        return usuarios.get(email);
+    public Usuario getUsuario(int id) {
+        return usuarios.get(id);
     }
 
-    public Usuario deleteUsuario(String email) {
-        return (usuarios.remove(email));
+    public Usuario deleteUsuario(int id) {
+        return (usuarios.remove(id));
     }
 
-    public Usuario editarUsuario(String email, Usuario usuario) {
-        Usuario usuarioEditar = getUsuario(email);
+    public Usuario editarUsuario(int id, Usuario usuario) {
+        Usuario usuarioEditar = getUsuario(id);
 
         if (usuarioEditar != null) {
 
