@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 @RestController
+
 @RequestMapping("/historico/{id}")
 public class HistoricoController {
     @Autowired

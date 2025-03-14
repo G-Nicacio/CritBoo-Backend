@@ -1,10 +1,13 @@
 package br.edu.insper.CritBoo.Usuario;
 
 import java.time.LocalDate;
+import java.util.Random;
 
 public class Usuario {
+
+    private Random geraId = new Random();
+    private Integer id = geraId.nextInt(1000000);
     private String nome;
-    private int id;
     private String email;
     private String senha;
     private LocalDate dataNascimento;
@@ -16,9 +19,9 @@ public class Usuario {
 
     public String getEmail() {return email;}
 
-    public int getId() {return id;}
+    public Integer getId() {return id;}
 
-    public void setId() {this.id = id;}
+    public void setId(Integer id) {this.id = id;}
 
     public void setEmail(String email) {this.email = email;}
 
