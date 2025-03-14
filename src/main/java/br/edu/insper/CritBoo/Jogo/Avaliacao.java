@@ -3,8 +3,11 @@ package br.edu.insper.CritBoo.Jogo;
 import br.edu.insper.CritBoo.Usuario.Usuario;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 public class Avaliacao {
+    private Random geraId = new Random();
+    private Integer id = geraId.nextInt(1000000);
     private String comentario;
     private LocalDateTime dataAvaliacao;
     private float nota;
@@ -30,4 +33,8 @@ public class Avaliacao {
     public Jogo getJogo() {return jogo;}
 
     public void setJogo(Jogo jogo) {this.jogo = jogo;}
+
+    public Integer getId() {return id;}
+
+    public void setId(Integer id) {this.id = id;}
 }
