@@ -25,7 +25,7 @@ public class AvaliacaoService {
         return avaliacoes.get(id);
     }
 
-    public Avaliacao registrarAvaliacao(Avaliacao avaliacao) {
+    public String registrarAvaliacao(Avaliacao avaliacao) {
         Usuario usuarioBusca = usuarioService.getUsuario(avaliacao.getUsuario().getId());
         Jogo jogoBusca = jogoService.getJogos(avaliacao.getJogo().getId());
 
@@ -33,16 +33,17 @@ public class AvaliacaoService {
             if (avaliacao.getId() == 0) {
                 avaliacao.setId(avaliacoes.size() + 1);
             }
-            return avaliacoes.put(avaliacao.getId(), avaliacao);
+            avaliacoes.put(avaliacao.getId(), avaliacao);
+            return "registrado";
         }
-        return null;
+        return "Faltando algo";
     }
 
     public Avaliacao deletarAvaliacao(Integer id) {
-        return avaliacoes.get(id);
+        return avaliacoes.remove(id);
     }
 
-    public Avaliacao editarAvaliacao(Integer id, Avaliacao avaliacao) {
+    public String editarAvaliacao(Integer id, Avaliacao avaliacao) {
         Usuario usuarioBusca = usuarioService.getUsuario(avaliacao.getUsuario().getId());
         Jogo jogoBusca = jogoService.getJogos(avaliacao.getJogo().getId());
         Avaliacao avaliacaoBusca = avaliacoes.get(id);
@@ -51,8 +52,9 @@ public class AvaliacaoService {
             avaliacao.setId(avaliacaoBusca.getId());
             avaliacoes.remove(id);
             avaliacoes.put(avaliacao.getId(), avaliacao);
-            }
+            return "Editado";
+        }
 
-        return avaliacaoBusca;
+        return "Não encontrado";
         }
     }

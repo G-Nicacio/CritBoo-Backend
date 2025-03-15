@@ -25,11 +25,7 @@ public class AvaliacaoController {
 
     @PostMapping("/avaliacao")
     public String registrarAvaliasao(@RequestBody Avaliacao avaliacao){
-        Avaliacao avaliacaoRegistrada = avaliacaoService.registrarAvaliacao(avaliacao);
-        if (avaliacaoRegistrada != null){
-            return "Avaliação registrada";
-        }
-        return "Está faltando alguma informação";
+        return avaliacaoService.registrarAvaliacao(avaliacao);
     }
 
     @DeleteMapping("/avaliacao/{id}")
@@ -39,5 +35,15 @@ public class AvaliacaoController {
             return "Avaliação deletada";
         }
         return "Avaliação não encontrada";
+    }
+
+    @PutMapping("/avaliacao/{id}")
+    public String atualizarAvaliacao(@PathVariable Integer id, @RequestBody Avaliacao avaliacao){
+        return avaliacaoService.editarAvaliacao(id, avaliacao);
+//        Avaliacao avaliacaoEditada = avaliacaoService.editarAvaliacao(id, avaliacao);
+//        if (avaliacaoEditada != null) {
+//            return "Avaliação editada";
+//        }
+//        return "Avaliação não encontrada";
     }
 }
