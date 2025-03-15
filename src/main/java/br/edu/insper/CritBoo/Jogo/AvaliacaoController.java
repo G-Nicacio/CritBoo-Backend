@@ -26,11 +26,6 @@ public class AvaliacaoController {
     @PostMapping("/avaliacao")
     public String registrarAvaliasao(@RequestBody Avaliacao avaliacao){
         return avaliacaoService.registrarAvaliacao(avaliacao);
-//        Avaliacao avaliacaoRegistrada = avaliacaoService.registrarAvaliacao(avaliacao);
-//        if (avaliacaoRegistrada != null){
-//            return "Avaliação registrada";
-//        }
-//        return "Está faltando alguma informação";
     }
 
     @DeleteMapping("/avaliacao/{id}")
