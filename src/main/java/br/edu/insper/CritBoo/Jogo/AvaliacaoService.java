@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class AvaliacaoService {
@@ -15,46 +16,31 @@ public class AvaliacaoService {
     @Autowired
     private UsuarioService usuarioService;
 
-    private HashMap<Integer, Avaliacao> avaliacoes = new HashMap<>();
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
 
-    public HashMap<Integer, Avaliacao> getAvaliacoes() {
-        return avaliacoes;
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacaoRepository.findAll();
     }
 
     public Avaliacao getUmaAvaliacao(Integer id) {
-        return avaliacoes.get(id);
+        return avaliacaoRepository.findById(id).get();
     }
 
-    public String registrarAvaliacao(Avaliacao avaliacao) {
-        Usuario usuarioBusca = usuarioService.getUsuario(avaliacao.getUsuario().getId());
-        Jogo jogoBusca = jogoService.getJogos(avaliacao.getJogo().getId());
-
-        if (usuarioBusca != null && jogoBusca != null) {
-            if (avaliacao.getId() == 0) {
-                avaliacao.setId(avaliacoes.size() + 1);
-            }
-            avaliacoes.put(avaliacao.getId(), avaliacao);
-            return "registrado";
-        }
-        return "Faltando algo";
+    public void registrarAvaliacao(Avaliacao avaliacao) {
+        avaliacaoRepository.save(avaliacao);
     }
 
-    public Avaliacao deletarAvaliacao(Integer id) {
-        return avaliacoes.remove(id);
+    public void deletarAvaliacao(Integer id) {
+        avaliacaoRepository.deleteById(id);
     }
 
-    public String editarAvaliacao(Integer id, Avaliacao avaliacao) {
-        Usuario usuarioBusca = usuarioService.getUsuario(avaliacao.getUsuario().getId());
-        Jogo jogoBusca = jogoService.getJogos(avaliacao.getJogo().getId());
-        Avaliacao avaliacaoBusca = avaliacoes.get(id);
+    public Avaliacao editarAvaliacao(Avaliacao avaliacaoAnterior,Avaliacao avaliacao) {
+        avaliacaoAnterior.setComentario(avaliacao.getComentario());
+        avaliacaoAnterior.setJogo(avaliacao.getJogo());
+        avaliacaoAnterior.setNota(avaliacao.getNota());
+        avaliacaoAnterior.setUsuario(avaliacao.getUsuario());
 
-        if (usuarioBusca != null && jogoBusca != null && avaliacaoBusca != null) {
-            avaliacao.setId(avaliacaoBusca.getId());
-            avaliacoes.remove(id);
-            avaliacoes.put(avaliacao.getId(), avaliacao);
-            return "Editado";
-        }
-
-        return "Não encontrado";
+        return avaliacaoRepository.save(avaliacaoAnterior);
         }
     }

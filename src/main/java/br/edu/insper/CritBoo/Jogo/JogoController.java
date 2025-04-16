@@ -5,8 +5,10 @@ import br.edu.insper.CritBoo.Usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class JogoController {
@@ -15,47 +17,50 @@ public class JogoController {
     private JogoService jogoService;
 
     @GetMapping("/jogos")
-    public HashMap<Integer, Jogo> getjogo() {
-
+    public List<Jogo> getjogo() {
+        if (jogoService.getJogos().size() == 0){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não há jogos registrados");
+        }
         return jogoService.getJogos();
     }
 
     @PostMapping("/jogos")
     @ResponseStatus(HttpStatus.CREATED)
-    public String salvarjogos(@RequestBody Jogo jogo) {
+    public Jogo salvarjogos(@RequestBody Jogo jogo) {
         if (jogo.getNomeJogo() == null) {
-            return "Nome não pode ser nulo";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nome não pode ser nulo");
         }
 
         if (jogo.getDescricaoJogo() == null) {
-            return "Descrição não pode ser nulo";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,  "Descrição não pode ser nulo");
         }
 
         if (jogo.getLancamentoJogo() == null) {
-            return "Data de lançamento não pode ser nulo";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Data de lançamento não pode ser nulo");
         }
 
-//        if (jogo.getEstudio() == null) {
-//            return "Estudio não pode ser nulo";
-//        }
-
         jogoService.salvarJogo(jogo);
-        return "Jogo salvo com sucesso";
+        return jogo;
     }
 
     @GetMapping("/jogos/{id}")
     public Jogo getJogos(@PathVariable Integer id) {
-        return jogoService.getJogos(id);
+        Jogo jogo = jogoService.getJogos(id);
+        if (jogo == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogo " + id + " não encontrado");
+        }
+        return jogo;
     }
 
     @DeleteMapping("/jogos/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String excluirJogo(@PathVariable Integer id) {
-        Jogo jogo = jogoService.deleteJogo(id);
-        if (jogo != null) {
-            return "Jogo removido com sucesso";
+    public Jogo excluirJogo(@PathVariable Integer id) {
+        Jogo jogo = jogoService.getJogos(id);
+        if (jogo == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogo " + id + " não encontrado");
         }
-        return "Jogo não encontrado";
+        jogoService.deleteJogo(id);
+        return jogo;
     }
 
     @PutMapping("/jogos/{id}")

@@ -1,12 +1,25 @@
 package br.edu.insper.CritBoo.Usuario;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
 public class Usuario {
+    @Column(nullable = false)
     private String nome;
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false, unique = true)
     private String senha;
+
+    @Column(nullable = false)
     private LocalDate dataNascimento;
 //    private Historico historico = new Historico();
 

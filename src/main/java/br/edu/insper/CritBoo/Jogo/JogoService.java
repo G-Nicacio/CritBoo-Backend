@@ -1,32 +1,32 @@
 package br.edu.insper.CritBoo.Jogo;
 
 import br.edu.insper.CritBoo.Usuario.Usuario;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class JogoService {
 
-    private HashMap<Integer, Jogo> jogos = new HashMap<>();
+    @Autowired
+    private JogoRepository jogoRepository;
 
-    public HashMap<Integer, Jogo> getJogos() {
-        return jogos;
+    public List<Jogo> getJogos() {
+        return jogoRepository.findAll();
     }
 
     public void salvarJogo(Jogo jogo){
-        if (jogo.getId() == 0) {
-            jogo.setId(jogos.size() + 1);
-        }
-        jogos.put(jogo.getId(),jogo);
+        jogoRepository.save(jogo);
     }
 
     public Jogo getJogos(Integer id) {
-        return jogos.get(id);
+        return jogoRepository.findById(id).get();
     }
 
-    public Jogo deleteJogo(Integer id) {
-        return (jogos.remove(id));
+    public void deleteJogo(Integer id) {
+        jogoRepository.deleteById(id);
     }
 
     public Jogo editarJogo(Integer id, Jogo jogo) {
@@ -43,9 +43,7 @@ public class JogoService {
             if (jogo.getLancamentoJogo() != null) {
                 jogoEditar.setLancamentoJogo(jogo.getLancamentoJogo());
             }
-//            if (jogo.getEstudio() != null) {
-//                jogoEditar.setEstudio(jogo.getEstudio());
-//            }
+
         }
         return jogoEditar;
     }

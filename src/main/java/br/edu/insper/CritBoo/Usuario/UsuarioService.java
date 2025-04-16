@@ -6,42 +6,37 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class UsuarioService {
 
-    private HashMap<Integer, Usuario> usuarios = new HashMap<>();
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    public HashMap<Integer, Usuario> getUsuarios () {
-        return usuarios;
+    public List<Usuario> getUsuarios () {
+        return usuarioRepository.findAll();
     }
 
-    public void salvarUsuario(Usuario usuario){
-        usuarios.put(usuario.getId(),usuario);
+    public void salvarUsuario(Usuario usuario){;
+        usuarioRepository.save(usuario);
     }
 
     public Usuario getUsuario(int id) {
-        return usuarios.get(id);
+        return usuarioRepository.findById(id).get();
     }
 
-    public Usuario deleteUsuario(int id) {
-        return (usuarios.remove(id));
+    public void deleteUsuario(int id) {
+        usuarioRepository.deleteById(id);
     }
 
-    public Usuario editarUsuario(int id, Usuario usuario) {
-        Usuario usuarioEditar = getUsuario(id);
+    public Usuario editarUsuario(Usuario usuarioAntes, Usuario usuario) {
+        usuarioAntes.setEmail(usuario.getEmail());
+        usuarioAntes.setNome(usuario.getNome());
+        usuarioAntes.setDataNascimento(usuario.getDataNascimento());
+        usuarioAntes.setSenha(usuario.getSenha());
 
-        if (usuarioEditar != null) {
-
-            if (usuario.getNome() != null) {
-                usuarioEditar.setNome(usuario.getNome());
-            }
-
-            if (usuario.getDataNascimento() != usuarioEditar.getDataNascimento()) {
-                usuarioEditar.setDataNascimento(usuario.getDataNascimento());
-            }
-        }
-        return usuarioEditar;
+        return usuarioRepository.save(usuarioAntes);
     }
 
 }

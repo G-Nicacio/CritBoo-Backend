@@ -1,18 +1,41 @@
 package br.edu.insper.CritBoo.Jogo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+@Entity
 public class Jogo {
+    @Transient
     private Random geraId = new Random();
+    @Id
     private Integer id = geraId.nextInt(1000000);
+
+    @Column(nullable = false)
     private String nomeJogo;
+
+    @Column(nullable = false)
     private String descricaoJogo;
+
+    @Column(nullable = false)
     private LocalDate lancamentoJogo;
-    private ArrayList<Categoria> categorias = new ArrayList<>();
-    private Avaliacao comentarios;
-    private Estudio estudio = new Estudio();
+
+    @ManyToMany
+    @JoinTable(
+            name = "jogo_categoria",
+            joinColumns = @JoinColumn(name = "jogo_id"),
+            inverseJoinColumns = @JoinColumn(name = "categoria_id")
+    )
+    private List<Categoria> categorias = new ArrayList<>();
+
+    @OneToMany(mappedBy = "jogo")
+    private List<Avaliacao> comentarios = new ArrayList<>();
+
+//    private Estudio estudio = new Estudio();
 
     public String getNomeJogo() {return nomeJogo;}
 
@@ -26,13 +49,13 @@ public class Jogo {
 
     public void setLancamentoJogo(LocalDate lancamentoJogo) {this.lancamentoJogo = lancamentoJogo;}
 
-    public ArrayList<Categoria> getCategorias() {return categorias;}
+    public List<Categoria> getCategorias() {return categorias;}
 
     public void setCategorias(ArrayList<Categoria> categorias) {this.categorias = categorias;}
 
-    public Avaliacao getComentarios() {return comentarios;}
-
-    public void setComentarios(Avaliacao comentarios) {this.comentarios = comentarios;}
+//    public Avaliacao getComentarios() {return comentarios;}
+//
+//    public void setComentarios(Avaliacao comentarios) {this.comentarios = comentarios;}
 
 //    public Estudio getEstudio() {return estudio;}
 //

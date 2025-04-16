@@ -1,42 +1,37 @@
 package br.edu.insper.CritBoo.Jogo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class CategoriaService {
-    private HashMap<Integer, Categoria> categorias = new HashMap<>();
 
-    public HashMap<Integer, Categoria> getCategorias() {
-        return categorias;
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
+    public List<Categoria> getCategorias() {
+        return categoriaRepository.findAll();
     }
 
     public Categoria getCategoria(Integer id){
-        return categorias.get(id);
+        return categoriaRepository.findById(id).get();
     }
 
-    public String registrarCategoria(Categoria categoria) {
-        if (categoria.getNomeCategoria() != null && categoria.getNomeCategoria() != "" && categoria.getDescricao() != null && categoria.getDescricao() != ""){
-            if (categoria.getId() == 0) {
-                categoria.setId(categorias.size() + 1);
-            }
-            categorias.put(categoria.getId(), categoria);
-            return "Categoria registrada";
-        }
-        return null;
+    public void registrarCategoria(Categoria categoria) {
+        categoriaRepository.save(categoria);
     }
 
-    public Categoria deletarCategoria(Integer id){
-        return categorias.remove(id);
+    public void deletarCategoria(Integer id){
+        categoriaRepository.deleteById(id);
     }
 
-    public Categoria atualizarCategoria(Integer id, Categoria categoria){
-        Categoria categoriaEdit = categorias.get(id);
-        if (categoria.getNomeCategoria() != null && categoria.getNomeCategoria() != "" && categoria.getDescricao() != null && categoria.getDescricao() != "" && categoriaEdit != null) {
-            categoriaEdit.setNomeCategoria(categoria.getNomeCategoria());
-            categoriaEdit.setDescricao(categoria.getDescricao());
-        }
-        return categoriaEdit;
+    public Categoria atualizarCategoria(Categoria categoriaAnterior, Categoria categoria){
+        categoriaAnterior.setNomeCategoria(categoria.getNomeCategoria());
+        categoriaAnterior.setDescricao(categoria.getDescricao());
+
+        return categoriaRepository.save(categoriaAnterior);
     }
 }
