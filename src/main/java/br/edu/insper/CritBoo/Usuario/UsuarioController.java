@@ -3,8 +3,10 @@ package br.edu.insper.CritBoo.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class UsuarioController {
@@ -13,23 +15,31 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/usuario")
-    public HashMap<Integer, Usuario> getUsuarios() {
+    public List<Usuario> getUsuarios() {
         return usuarioService.getUsuarios();
     }
 
     @PostMapping("/usuario")
     @ResponseStatus(HttpStatus.CREATED)
-    public String salvarUsuario(@RequestBody Usuario usuario) {
+    public Usuario salvarUsuario(@RequestBody Usuario usuario) {
         if (usuario.getNome() == null) {
-            return "Nome não pode ser nulo";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nome não pode ser nulo");
         }
 
         if (usuario.getEmail() == null) {
-            return "Email não pode ser nulo";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "e-mail não pode ser nulo");
+        }
+
+        if (usuario.getDataNascimento() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Data de nascimento não pode ser nula");
+        }
+
+        if (usuario.getSenha() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senha não pode ser nula");
         }
 
         usuarioService.salvarUsuario(usuario);
-        return "Usuario salvo com sucesso";
+        return usuario;
     }
 
     @GetMapping("/usuario/{id}")
@@ -39,22 +49,41 @@ public class UsuarioController {
 
     @DeleteMapping("/usuario/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String excluirUsuario(@PathVariable int id) {
-        Usuario usuario = usuarioService.deleteUsuario(id);
-        if (usuario != null) {
-            return "Usuario removido com sucesso";
+    public Usuario excluirUsuario(@PathVariable int id) {
+        Usuario usuario = usuarioService.getUsuario(id);
+        if (usuario == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário " + id + " não encontrado");
         }
-        return "Usuario não encontrado";
+        usuarioService.deleteUsuario(id);
+        return usuario;
     }
 
     @PutMapping("/usuario/{id}")
-    public String editarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
+    public Usuario editarUsuario(@PathVariable Integer id, @RequestBody Usuario usuario) {
 
-        Usuario usuarioretorno = usuarioService.editarUsuario(id, usuario);
-        if (usuarioretorno != null) {
-            return "Usuario alterado com sucesso";
+        if (usuario.getNome() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nome não pode ser nulo");
         }
-        return "Usuario não encontrado";
+
+        if (usuario.getEmail() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "e-mail não pode ser nulo");
+        }
+
+        if (usuario.getDataNascimento() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Data de nascimento não pode ser nula");
+        }
+
+        if (usuario.getSenha() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senha não pode ser nula");
+        }
+
+        Usuario usuarioAntes = usuarioService.getUsuario(id);
+        if (usuarioAntes == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário " + id + " não encontrado");
+        }
+
+        usuarioService.editarUsuario(usuarioAntes, usuario);
+        return usuario;
     }
 
 }

@@ -2,18 +2,16 @@ package br.edu.insper.CritBoo.Post;
 
 import br.edu.insper.CritBoo.Usuario.Usuario;
 
-import javax.persistence.*;
+//import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-@Entity
 public class Post {
     private Random geraId = new Random();
     private Integer id = geraId.nextInt(1000000);
     private String comentario;
     private LocalDateTime data;
 
-    @ManyToOne
     private Usuario usuario;
 
     public Integer getId() {

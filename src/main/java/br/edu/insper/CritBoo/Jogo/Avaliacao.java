@@ -1,29 +1,44 @@
 package br.edu.insper.CritBoo.Jogo;
 
 import br.edu.insper.CritBoo.Usuario.Usuario;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Random;
 
+@Entity
 public class Avaliacao {
+    @Transient
     private Random geraId = new Random();
+    @Id
     private Integer id = geraId.nextInt(1000000);
+
+    @Column(nullable = false)
     private String comentario;
-    private LocalDate dataAvaliacao;
-    private float nota;
-    private Usuario usuario = new Usuario();
-    private Jogo jogo = new Jogo();
+
+    private LocalDateTime dataAvaliacao;
+
+    @Column(nullable = false)
+    private Float nota;
+
+    @ManyToOne()
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "id_jogo")
+    private Jogo jogo;
 
     public String getComentario() {return comentario;}
 
     public void setComentario(String comentario) {this.comentario = comentario;}
 
-    public LocalDate getDataAvaliacao() {return dataAvaliacao;}
+    public LocalDateTime getDataAvaliacao() {return dataAvaliacao;}
 
-    public void setDataAvaliacao(LocalDate dataAvaliacao) {this.dataAvaliacao = dataAvaliacao;}
+    public void setDataAvaliacao(LocalDateTime dataAvaliacao) {this.dataAvaliacao = dataAvaliacao;}
 
-    public float getNota() {return nota;}
+    public Float getNota() {return nota;}
 
     public void setNota(float nota) {this.nota = nota;}
 
