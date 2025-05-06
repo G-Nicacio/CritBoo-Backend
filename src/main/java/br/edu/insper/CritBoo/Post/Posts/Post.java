@@ -3,11 +3,11 @@ package br.edu.insper.CritBoo.Post.Posts;
 import br.edu.insper.CritBoo.Usuario.Usuarios.Usuario;
 import jakarta.persistence.*;
 
-//import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Random;
 
+@Entity
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -17,7 +17,7 @@ public class Post {
 
     private LocalDateTime data;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
@@ -46,6 +46,6 @@ public class Post {
     }
 
     public void setData(LocalDateTime data) {
-        this.data = LocalDateTime.now();
+        this.data = data; // ou LocalDateTime.now() se quiser definir automaticamente
     }
 }

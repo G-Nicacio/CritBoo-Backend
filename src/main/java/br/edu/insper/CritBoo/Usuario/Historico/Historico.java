@@ -2,26 +2,29 @@ package br.edu.insper.CritBoo.Usuario.Historico;
 
 import br.edu.insper.CritBoo.Jogo.Avaliacao.Avaliacao;
 import br.edu.insper.CritBoo.Post.Posts.Post;
-import br.edu.insper.CritBoo.Usuario.Usuarios.Usuario;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+@Entity
 public class Historico {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private Post post = new Post();
+    @ManyToOne(optional = false)
+    private Post post;
 
-    @OneToMany
-    private Avaliacao avaliacao = new Avaliacao();
-
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "historico", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Avaliacao> avaliacoes = new ArrayList<>();
+
+    // Getters e setters
+
+    public Integer getId() {
+        return id;
+    }
 
     public Post getPost() {
         return post;
@@ -31,16 +34,11 @@ public class Historico {
         this.post = post;
     }
 
-    public Avaliacao getAvaliacao() {
-        return avaliacao;
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
     }
 
-    public void setAvaliacao(Avaliacao avaliacao) {
-        this.avaliacao = avaliacao;
+    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+        this.avaliacoes = avaliacoes;
     }
-
-    public Integer getId() {
-        return id;
-    }
-
 }

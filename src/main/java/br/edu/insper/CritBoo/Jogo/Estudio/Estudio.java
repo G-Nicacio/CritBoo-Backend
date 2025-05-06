@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Random;
 
 @Entity
 public class Estudio {
@@ -14,7 +13,7 @@ public class Estudio {
 
     @ManyToMany
     @JoinTable(
-            name = "estudio_jogo",
+            name = "estudio",
             joinColumns = @JoinColumn(name = "estudio_id"),
             inverseJoinColumns = @JoinColumn(name = "jogo_id")
     )
@@ -26,6 +25,17 @@ public class Estudio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(nullable = false)
+    private String imagem;
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
 
     public String getNomeEstudio() {
         return nomeEstudio;

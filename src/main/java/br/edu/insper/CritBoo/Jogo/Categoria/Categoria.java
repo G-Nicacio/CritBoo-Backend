@@ -2,8 +2,6 @@ package br.edu.insper.CritBoo.Jogo.Categoria;
 
 import jakarta.persistence.*;
 
-import java.util.Random;
-
 @Entity
 public class Categoria {
 

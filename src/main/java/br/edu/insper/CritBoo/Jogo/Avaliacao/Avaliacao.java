@@ -1,14 +1,15 @@
 package br.edu.insper.CritBoo.Jogo.Avaliacao;
 
 import br.edu.insper.CritBoo.Jogo.Jogos.Jogo;
+import br.edu.insper.CritBoo.Usuario.Historico.Historico;
 import br.edu.insper.CritBoo.Usuario.Usuarios.Usuario;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Random;
 
 @Entity
 public class Avaliacao {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class Avaliacao {
     @Column(nullable = false)
     private Float nota;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
@@ -30,27 +31,37 @@ public class Avaliacao {
     @JoinColumn(name = "id_jogo")
     private Jogo jogo;
 
-    public String getComentario() {return comentario;}
+    @ManyToOne
+    @JoinColumn(name = "historico_id")
+    private Historico historico;
 
-    public void setComentario(String comentario) {this.comentario = comentario;}
+    // Getters e Setters
 
-    public LocalDateTime getDataAvaliacao() {return dataAvaliacao;}
+    public Integer getId() { return id; }
 
-    public void setDataAvaliacao(LocalDateTime dataAvaliacao) {this.dataAvaliacao = dataAvaliacao;}
+    public void setId(Integer id) { this.id = id; }
 
-    public Float getNota() {return nota;}
+    public String getComentario() { return comentario; }
 
-    public void setNota(float nota) {this.nota = nota;}
+    public void setComentario(String comentario) { this.comentario = comentario; }
 
-    public Usuario getUsuario() {return usuario;}
+    public LocalDateTime getDataAvaliacao() { return dataAvaliacao; }
 
-    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
+    public void setDataAvaliacao(LocalDateTime dataAvaliacao) { this.dataAvaliacao = dataAvaliacao; }
 
-    public Jogo getJogo() {return jogo;}
+    public Float getNota() { return nota; }
 
-    public void setJogo(Jogo jogo) {this.jogo = jogo;}
+    public void setNota(Float nota) { this.nota = nota; }
 
-    public Integer getId() {return id;}
+    public Usuario getUsuario() { return usuario; }
 
-    public void setId(Integer id) {this.id = id;}
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
+
+    public Jogo getJogo() { return jogo; }
+
+    public void setJogo(Jogo jogo) { this.jogo = jogo; }
+
+    public Historico getHistorico() { return historico; }
+
+    public void setHistorico(Historico historico) { this.historico = historico; }
 }

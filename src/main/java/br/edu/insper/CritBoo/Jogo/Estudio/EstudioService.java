@@ -28,17 +28,14 @@ public class EstudioService {
         estudioRepository.deleteById(id);
     }
 
-    public HashMap<String, Estudio> atualizarEstudio(Estudio estudioAntigo, Estudio novoEstudio) {
+    public HashMap<String, Estudio> atualizarEstudio(Estudio estudioAntigo) {
         HashMap<String, Estudio> alteracoes = new HashMap<>();
 
         Estudio copiaAntes = new Estudio();
         copiaAntes.setNomeEstudio(estudioAntigo.getNomeEstudio());
         copiaAntes.setJogos(estudioAntigo.getJogos());
         copiaAntes.setDataFundacao(estudioAntigo.getDataFundacao());
-
-        estudioAntigo.setNomeEstudio(novoEstudio.getNomeEstudio());
-        estudioAntigo.setJogos(novoEstudio.getJogos());
-        estudioAntigo.setDataFundacao(novoEstudio.getDataFundacao());
+        copiaAntes.setImagem(estudioAntigo.getImagem()); // Adiciona imagem também
 
         estudioRepository.save(estudioAntigo);
 

@@ -1,12 +1,8 @@
 package br.edu.insper.CritBoo.Post.Noticia;
 
-import br.edu.insper.CritBoo.Post.Posts.Post;
-import br.edu.insper.CritBoo.Post.Posts.PostRepository;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Service

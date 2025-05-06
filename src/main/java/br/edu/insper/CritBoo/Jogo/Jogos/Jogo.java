@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Entity
 public class Jogo {
@@ -27,7 +26,7 @@ public class Jogo {
 
     @ManyToMany
     @JoinTable(
-            name = "jogo_categoria",
+            name = "jogo",
             joinColumns = @JoinColumn(name = "jogo_id"),
             inverseJoinColumns = @JoinColumn(name = "categoria_id")
 
@@ -38,6 +37,17 @@ public class Jogo {
     private List<Avaliacao> comentarios = new ArrayList<>();
 
 //    private Estudio estudio = new Estudio();
+
+    @Column(nullable = false)
+    private String imagem;
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
 
     public String getNomeJogo() {return nomeJogo;}
 

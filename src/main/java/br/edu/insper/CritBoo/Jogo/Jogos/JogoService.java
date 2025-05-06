@@ -41,6 +41,10 @@ public class JogoService {
             if (jogo.getLancamentoJogo() != null) {
                 jogoEditar.setLancamentoJogo(jogo.getLancamentoJogo());
             }
+            if (jogo.getImagem() != null) {
+                jogoEditar.setImagem(jogo.getImagem());
+            }
+
 
         }
         return jogoEditar;
