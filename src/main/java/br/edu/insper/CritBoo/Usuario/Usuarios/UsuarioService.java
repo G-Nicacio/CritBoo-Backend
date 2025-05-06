@@ -36,4 +36,9 @@ public class UsuarioService {
         return usuarioRepository.save(usuarioAntes);
     }
 
+    public Usuario getUsuarioPorEmail(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+
+
 }

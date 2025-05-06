@@ -2,6 +2,7 @@ package br.edu.insper.CritBoo.Jogo.Avaliacao;
 
 import br.edu.insper.CritBoo.Jogo.Jogos.Jogo;
 import br.edu.insper.CritBoo.Usuario.Usuarios.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class Avaliacao {
 
     @ManyToOne
     @JoinColumn(name = "id_jogo", nullable = false)
+    @JsonIgnore
     private Jogo jogo;
 
     public Integer getId() { return id; }

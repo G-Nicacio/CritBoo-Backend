@@ -5,6 +5,7 @@ import br.edu.insper.CritBoo.Jogo.Categoria.Categoria;
 import br.edu.insper.CritBoo.Jogo.Estudio.Estudio;
 import br.edu.insper.CritBoo.Post.Noticia.Noticia;
 import br.edu.insper.CritBoo.Post.Posts.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ public class Jogo {
 
     @ManyToOne
     @JoinColumn(name = "estudio_id", nullable = false)
+    @JsonIgnore
     private Estudio estudio;
 
     @ManyToMany
@@ -39,18 +41,22 @@ public class Jogo {
             joinColumns = @JoinColumn(name = "jogo_id"),
             inverseJoinColumns = @JoinColumn(name = "categoria_id")
     )
+    @JsonIgnore
     private Set<Categoria> categorias = new HashSet<>();
 
     @OneToMany(mappedBy = "jogo")
-    private final List<Avaliacao> comentarios = new ArrayList<>();
+    @JsonIgnore
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     @Column(nullable = false)
     private String imagem;
 
     @OneToMany(mappedBy = "jogo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Post> posts;
 
     @OneToMany(mappedBy = "jogo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Noticia> noticias;
 
     public String getImagem() {
@@ -86,11 +92,11 @@ public class Jogo {
     }
 
     public List<Avaliacao> getComentarios() {
-        return comentarios;
+        return avaliacoes;
     }
 
     public void adicionarComentario(Avaliacao comentario) {
-        this.comentarios.add(comentario);
+        this.avaliacoes.add(comentario);
         comentario.setJogo(this);
     }
 

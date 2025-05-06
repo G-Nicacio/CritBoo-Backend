@@ -1,6 +1,7 @@
 package br.edu.insper.CritBoo.Usuario.Usuarios;
 
 import br.edu.insper.CritBoo.Post.Posts.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class Usuario {
     private LocalDate dataNascimento;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Post> posts = new ArrayList<>();
 
     public String getNome() {return nome;}

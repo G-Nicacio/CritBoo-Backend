@@ -85,4 +85,16 @@ public class UsuarioController {
         return usuario;
     }
 
+    @PostMapping("/usuario/login")
+    public Usuario login(@RequestBody Usuario loginData) {
+        Usuario usuario = usuarioService.getUsuarioPorEmail(loginData.getEmail());
+
+        if (usuario == null || !usuario.getSenha().equals(loginData.getSenha())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email ou senha incorretos");
+        }
+
+        return usuario;
+    }
+
+
 }
