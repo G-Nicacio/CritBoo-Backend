@@ -1,10 +1,12 @@
 package br.edu.insper.CritBoo.Jogo.Estudio;
 
 import br.edu.insper.CritBoo.Jogo.Jogos.Jogo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Estudio {
@@ -13,11 +15,12 @@ public class Estudio {
 
     @ManyToMany
     @JoinTable(
-            name = "estudio",
+            name = "estudio_jogo",
             joinColumns = @JoinColumn(name = "estudio_id"),
             inverseJoinColumns = @JoinColumn(name = "jogo_id")
     )
-    private ArrayList<Jogo> jogos = new ArrayList<>();
+    @JsonIgnore
+    private List<Jogo> jogos = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDate dataFundacao;
@@ -28,6 +31,25 @@ public class Estudio {
 
     @Column(nullable = false)
     private String imagem;
+
+    @Column(nullable = false)
+    private String descricao;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
     public String getImagem() {
         return imagem;
@@ -45,7 +67,7 @@ public class Estudio {
     }
 
     public ArrayList<Jogo> getJogos() {
-        return jogos;
+        return (ArrayList<Jogo>) jogos;
     }
     public void setJogos(ArrayList<Jogo> jogos) {
         this.jogos = jogos;

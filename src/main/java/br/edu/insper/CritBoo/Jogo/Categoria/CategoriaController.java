@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class CategoriaController {
@@ -13,26 +14,26 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping("/categoria")
-    public List<Categoria> getCategorias(){
-        if (categoriaService.getCategorias().size() == 0){
+    public List<CategoriaJogosDTO> getCategorias(){
+        if (categoriaService.getCategorias().isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não há categorias registradas");
         }
-        return categoriaService.getCategorias();
+
+        return categoriaService.getCategorias().stream()
+                .map(CategoriaJogosDTO::new)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/categoria/{id}")
-    public Categoria getCategoria(@PathVariable Integer id){
-        return categoriaService.getCategoria(id);
+    public CategoriaJogosDTO getCategoria(@PathVariable Integer id){
+        return new CategoriaJogosDTO(categoriaService.getCategoria(id));
     }
+
 
     @PostMapping("/categoria")
     public Categoria registrarCategoria(@RequestBody Categoria categoria) {
         if (categoria.getNomeCategoria() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nome não pode ser nulo");
-        }
-
-        if (categoria.getDescricao() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Descrição não pode ser nula");
         }
 
         categoriaService.registrarCategoria(categoria);
@@ -60,9 +61,6 @@ public class CategoriaController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nome não pode ser nulo");
         }
 
-        if (categoria.getDescricao() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Descrição não pode ser nula");
-        }
         return categoriaService.atualizarCategoria(categoriaReturn, categoria);
     }
 }

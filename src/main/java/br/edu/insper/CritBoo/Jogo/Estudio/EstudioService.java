@@ -1,9 +1,10 @@
 package br.edu.insper.CritBoo.Jogo.Estudio;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -16,33 +17,25 @@ public class EstudioService {
         return estudioRepository.findAll();
     }
 
-    public Estudio getEstudioEspecifico(Integer id) {
-        return estudioRepository.findById(id).get();
+    public Estudio getEstudio(Integer id) {
+        return estudioRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Estúdio não encontrado."));
     }
 
-    public void registrarEstudio(Estudio estudioRecebido) {
-        estudioRepository.save(estudioRecebido);
+    public Estudio criarEstudio(Estudio estudio) {
+        return estudioRepository.save(estudio);
     }
 
-    public void removerEstudio(Integer id) {
-        estudioRepository.deleteById(id);
+    public Estudio atualizarEstudio(Integer id, Estudio atualizado) {
+        Estudio existente = getEstudio(id);
+        existente.setNomeEstudio(atualizado.getNomeEstudio());
+        existente.setDataFundacao(atualizado.getDataFundacao());
+        existente.setImagem(atualizado.getImagem());
+        return estudioRepository.save(existente);
     }
 
-    public HashMap<String, Estudio> atualizarEstudio(Estudio estudioAntigo) {
-        HashMap<String, Estudio> alteracoes = new HashMap<>();
-
-        Estudio copiaAntes = new Estudio();
-        copiaAntes.setNomeEstudio(estudioAntigo.getNomeEstudio());
-        copiaAntes.setJogos(estudioAntigo.getJogos());
-        copiaAntes.setDataFundacao(estudioAntigo.getDataFundacao());
-        copiaAntes.setImagem(estudioAntigo.getImagem()); // Adiciona imagem também
-
-        estudioRepository.save(estudioAntigo);
-
-        alteracoes.put("antes", copiaAntes);
-        alteracoes.put("depois", estudioAntigo);
-
-        return alteracoes;
+    public void deletarEstudio(Integer id) {
+        Estudio estudio = getEstudio(id);
+        estudioRepository.delete(estudio);
     }
-
 }

@@ -1,9 +1,11 @@
 package br.edu.insper.CritBoo.Usuario.Usuarios;
 
-import br.edu.insper.CritBoo.Usuario.Historico.Historico;
+import br.edu.insper.CritBoo.Post.Posts.Post;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Usuario {
@@ -17,16 +19,14 @@ public class Usuario {
     @Column(nullable = false)
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "historico_id", referencedColumnName = "id")
-    private Historico historico = new Historico();
-
     @Column(nullable = false, unique = true)
     private String senha;
 
     @Column(nullable = false)
     private LocalDate dataNascimento;
-//    private Historico historico = new Historico();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
 
     public String getNome() {return nome;}
 
@@ -36,7 +36,7 @@ public class Usuario {
 
     public int getId() {return id;}
 
-    public void setId() {this.id = id;}
+    public void setId(Integer id) { this.id = id; }
 
     public void setEmail(String email) {this.email = email;}
 
@@ -48,9 +48,5 @@ public class Usuario {
 
     public void setDataNascimento(LocalDate dataNascimento) {this.dataNascimento = dataNascimento;}
 
-
-//    public Historico getHistorico() {return historico;}
-//
-//    public void setHistorico(Historico historico) {this.historico = historico;}
 
 }

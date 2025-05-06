@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/avaliacao")
 public class AvaliacaoController {
     @Autowired
     private UsuarioService usuarioService;
@@ -22,73 +23,81 @@ public class AvaliacaoController {
     @Autowired
     private AvaliacaoService avaliacaoService;
 
-    @GetMapping("/avaliacao")
-    public List<Avaliacao> getAvaliacao() {
-        if (avaliacaoService.getAvaliacoes().size() > 0){
-            return avaliacaoService.getAvaliacoes();
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não há avaliações registradas");
-    }
-
-    @GetMapping("/avaliacao/{id}")
-    public Avaliacao getAvaliacao(@PathVariable Integer id) {
-        if (avaliacaoService.getUmaAvaliacao(id) != null){
-            return avaliacaoService.getUmaAvaliacao(id);
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação " + id + " não encontrada");
-    }
-
-    @PostMapping("/avaliacao")
-    public Avaliacao registrarAvaliasao(@RequestBody Avaliacao avaliacao){
-        Usuario usuario = usuarioService.getUsuario(avaliacao.getUsuario().getId());
-        if (usuario == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O usuário " + avaliacao.getUsuario().getId() + " não foi encontrado");
-        }
-        Jogo jogo = jogoService.getJogos(avaliacao.getJogo().getId());
+    @GetMapping("/jogo/{jogoId}")
+    public List<Avaliacao> getAvaliacoesPorJogo(@PathVariable Integer jogoId) {
+        Jogo jogo = jogoService.getJogos(jogoId);
         if (jogo == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O jogo " + avaliacao.getJogo().getId() + " não foi encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogo " + jogoId + " não encontrado");
         }
-        if (avaliacao.getComentario() ==  null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Precisa deixar um comentário");
+        List<Avaliacao> avaliacoes = avaliacaoService.getAvaliacoesPorJogo(jogo);
+        if (avaliacoes.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não há avaliações para o jogo " + jogoId);
         }
-        if (avaliacao.getNota() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Precisa deixar uma nota");
+        return avaliacoes;
+    }
+
+    @PostMapping("/")
+    public Avaliacao registrarAvaliacoes(@RequestBody Avaliacao avaliacao) {
+        if (avaliacao == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A avaliação não pode ser nula");
         }
+
+
+        Usuario usuario = usuarioService.getUsuario(avaliacao.getUsuario().getId());
+        if (usuario == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
+        }
+
+        Jogo jogo = jogoService.getJogos(avaliacao.getJogo().getId());
+        if (jogo == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogo não encontrado");
+        }
+
+        if (avaliacao.getComentario() == null || avaliacao.getComentario().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comentário não pode ser vazio");
+        }
+        if (avaliacao.getNota() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nota é obrigatória");
+        }
+
+        System.out.println("Avaliação recebida: " + avaliacao.getJogo().getId());
+        avaliacao.setUsuario(avaliacao.getUsuario());
+        avaliacao.setJogo(avaliacao.getJogo());
 
         avaliacaoService.registrarAvaliacao(avaliacao);
 
         return avaliacao;
     }
 
-    @DeleteMapping("/avaliacao/{id}")
+    @DeleteMapping("/{id}")
     public Avaliacao deletarAvaliacao(@PathVariable Integer id) {
         Avaliacao avaliacaoDeletada = avaliacaoService.getUmaAvaliacao(id);
-        if (avaliacaoDeletada != null){
+        if (avaliacaoDeletada != null) {
             avaliacaoService.deletarAvaliacao(id);
             return avaliacaoDeletada;
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação " + id + " não encontrada");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada");
     }
 
-    @PutMapping("/avaliacao/{id}")
-    public Avaliacao atualizarAvaliacao(@PathVariable Integer id, @RequestBody Avaliacao avaliacao){
+    @PutMapping("/{id}")
+    public Avaliacao atualizarAvaliacao(@PathVariable Integer id, @RequestBody Avaliacao avaliacao) {
         Usuario usuario = usuarioService.getUsuario(avaliacao.getUsuario().getId());
-        if (usuario == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O usuário " + avaliacao.getUsuario().getId() + " não foi encontrado");
+        if (usuario == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
         }
         Jogo jogo = jogoService.getJogos(avaliacao.getJogo().getId());
-        if (jogo == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O jogo " + avaliacao.getJogo().getId() + " não foi encontrado");
+        if (jogo == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogo não encontrado");
         }
-        if (avaliacao.getComentario() ==  null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Precisa deixar um comentário");
+        if (avaliacao.getComentario() == null || avaliacao.getComentario().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comentário não pode ser vazio");
         }
-        if (avaliacao.getNota() == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Precisa deixar uma nota");
+        if (avaliacao.getNota() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nota é obrigatória");
         }
 
         Avaliacao avaliacaoAnterior = avaliacaoService.getUmaAvaliacao(id);
-        if (avaliacaoAnterior == null){
+        if (avaliacaoAnterior == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada");
         }
 

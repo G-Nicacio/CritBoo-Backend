@@ -2,11 +2,16 @@ package br.edu.insper.CritBoo.Jogo.Jogos;
 
 import br.edu.insper.CritBoo.Jogo.Avaliacao.Avaliacao;
 import br.edu.insper.CritBoo.Jogo.Categoria.Categoria;
+import br.edu.insper.CritBoo.Jogo.Estudio.Estudio;
+import br.edu.insper.CritBoo.Post.Noticia.Noticia;
+import br.edu.insper.CritBoo.Post.Posts.Post;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Jogo {
@@ -24,22 +29,29 @@ public class Jogo {
     @Column(nullable = false)
     private LocalDate lancamentoJogo;
 
+    @ManyToOne
+    @JoinColumn(name = "estudio_id", nullable = false)
+    private Estudio estudio;
+
     @ManyToMany
     @JoinTable(
-            name = "jogo",
+            name = "jogo_categoria",
             joinColumns = @JoinColumn(name = "jogo_id"),
             inverseJoinColumns = @JoinColumn(name = "categoria_id")
-
     )
-    private List<Categoria> categorias = new ArrayList<>();
+    private Set<Categoria> categorias = new HashSet<>();
 
     @OneToMany(mappedBy = "jogo")
-    private List<Avaliacao> comentarios = new ArrayList<>();
-
-//    private Estudio estudio = new Estudio();
+    private final List<Avaliacao> comentarios = new ArrayList<>();
 
     @Column(nullable = false)
     private String imagem;
+
+    @OneToMany(mappedBy = "jogo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
+
+    @OneToMany(mappedBy = "jogo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Noticia> noticias;
 
     public String getImagem() {
         return imagem;
@@ -61,19 +73,48 @@ public class Jogo {
 
     public void setLancamentoJogo(LocalDate lancamentoJogo) {this.lancamentoJogo = lancamentoJogo;}
 
-    public List<Categoria> getCategorias() {return categorias;}
-
-    public void setCategorias(ArrayList<Categoria> categorias) {this.categorias = categorias;}
-
-//    public Avaliacao getComentarios() {return comentarios;}
-//
-//    public void setComentarios(Avaliacao comentarios) {this.comentarios = comentarios;}
-
-//    public Estudio getEstudio() {return estudio;}
-//
-//    public void setEstudio(Estudio estudio) {this.estudio = estudio;}
-
     public Integer getId() {return id;}
 
     public void setId(Integer id) {this.id = id;}
+
+    public Estudio getEstudio() {
+        return estudio;
+    }
+
+    public void setEstudio(Estudio estudio) {
+        this.estudio = estudio;
+    }
+
+    public List<Avaliacao> getComentarios() {
+        return comentarios;
+    }
+
+    public void adicionarComentario(Avaliacao comentario) {
+        this.comentarios.add(comentario);
+        comentario.setJogo(this);
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<Noticia> getNoticias() {
+        return noticias;
+    }
+
+    public void setNoticias(List<Noticia> noticias) {
+        this.noticias = noticias;
+    }
+
+    public void setCategorias(Set<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    public Set<Categoria> getCategorias() {
+        return categorias;
+    }
 }

@@ -29,7 +29,6 @@ public class CategoriaService {
 
     public Categoria atualizarCategoria(Categoria categoriaAnterior, Categoria categoria){
         categoriaAnterior.setNomeCategoria(categoria.getNomeCategoria());
-        categoriaAnterior.setDescricao(categoria.getDescricao());
 
         return categoriaRepository.save(categoriaAnterior);
     }

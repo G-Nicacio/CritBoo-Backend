@@ -1,7 +1,6 @@
 package br.edu.insper.CritBoo.Jogo.Avaliacao;
 
 import br.edu.insper.CritBoo.Jogo.Jogos.Jogo;
-import br.edu.insper.CritBoo.Usuario.Historico.Historico;
 import br.edu.insper.CritBoo.Usuario.Usuarios.Usuario;
 import jakarta.persistence.*;
 
@@ -28,14 +27,8 @@ public class Avaliacao {
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "id_jogo")
+    @JoinColumn(name = "id_jogo", nullable = false)
     private Jogo jogo;
-
-    @ManyToOne
-    @JoinColumn(name = "historico_id")
-    private Historico historico;
-
-    // Getters e Setters
 
     public Integer getId() { return id; }
 
@@ -61,7 +54,4 @@ public class Avaliacao {
 
     public void setJogo(Jogo jogo) { this.jogo = jogo; }
 
-    public Historico getHistorico() { return historico; }
-
-    public void setHistorico(Historico historico) { this.historico = historico; }
 }

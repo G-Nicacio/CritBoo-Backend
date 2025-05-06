@@ -1,6 +1,10 @@
 package br.edu.insper.CritBoo.Jogo.Categoria;
 
+import br.edu.insper.CritBoo.Jogo.Jogos.Jogo;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Categoria {
@@ -12,8 +16,8 @@ public class Categoria {
     @Column(nullable = false)
     private String nomeCategoria;
 
-    @Column(nullable = false)
-    private String descricao;
+    @ManyToMany(mappedBy = "categorias")
+    private Set<Jogo> jogos = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -29,12 +33,11 @@ public class Categoria {
         this.nomeCategoria = nomeCategoria;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public Set<Jogo> getJogos() {
+        return jogos;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setJogos(Set<Jogo> jogos) {
+        this.jogos = jogos;
     }
-
 }

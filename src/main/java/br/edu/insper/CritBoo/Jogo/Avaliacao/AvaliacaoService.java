@@ -1,5 +1,6 @@
 package br.edu.insper.CritBoo.Jogo.Avaliacao;
 
+import br.edu.insper.CritBoo.Jogo.Jogos.Jogo;
 import br.edu.insper.CritBoo.Jogo.Jogos.JogoService;
 import br.edu.insper.CritBoo.Usuario.Usuarios.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,23 +24,30 @@ public class AvaliacaoService {
     }
 
     public Avaliacao getUmaAvaliacao(Integer id) {
-        return avaliacaoRepository.findById(id).get();
+        return avaliacaoRepository.findById(id).orElse(null);
     }
 
-    public void registrarAvaliacao(Avaliacao avaliacao) {
-        avaliacaoRepository.save(avaliacao);
+    public Avaliacao registrarAvaliacao(Avaliacao avaliacao) {
+        System.out.println("Registrando avaliação: " + avaliacao);
+        return avaliacaoRepository.save(avaliacao);
     }
+
+
 
     public void deletarAvaliacao(Integer id) {
         avaliacaoRepository.deleteById(id);
     }
 
-    public Avaliacao editarAvaliacao(Avaliacao avaliacaoAnterior,Avaliacao avaliacao) {
+    public Avaliacao editarAvaliacao(Avaliacao avaliacaoAnterior, Avaliacao avaliacao) {
         avaliacaoAnterior.setComentario(avaliacao.getComentario());
         avaliacaoAnterior.setJogo(avaliacao.getJogo());
         avaliacaoAnterior.setNota(avaliacao.getNota());
         avaliacaoAnterior.setUsuario(avaliacao.getUsuario());
 
         return avaliacaoRepository.save(avaliacaoAnterior);
-        }
     }
+
+    public List<Avaliacao> getAvaliacoesPorJogo(Jogo jogo) {
+        return avaliacaoRepository.findByJogo(jogo);
+    }
+}

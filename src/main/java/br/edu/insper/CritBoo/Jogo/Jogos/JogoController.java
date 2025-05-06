@@ -1,5 +1,6 @@
 package br.edu.insper.CritBoo.Jogo.Jogos;
 
+import br.edu.insper.CritBoo.Jogo.Avaliacao.Avaliacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,9 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @RestController
 @RequestMapping("/jogos")
 public class JogoController {
@@ -18,12 +16,10 @@ public class JogoController {
     @Autowired
     private JogoService jogoService;
 
-    @GetMapping
-    public Page<Jogo> getJogos(
-            @RequestParam(required = false) String nome,
-            @RequestParam(required = false) LocalDate lancamentoJogo,
-            Pageable pageable) {
-        return jogoService.getJogos(nome, lancamentoJogo, pageable);
+    @GetMapping()
+    public Page<JogoDTO> getJogos(Pageable pageable) {
+        return jogoService.getTodosJogos(pageable)
+                .map(JogoDTO::new);
     }
 
     @PostMapping
@@ -46,13 +42,14 @@ public class JogoController {
     }
 
     @GetMapping("/{id}")
-    public Jogo getJogo(@PathVariable Integer id) {
-        Jogo jogo = jogoService.getJogos(id);
+    public JogoDTO getJogo(@PathVariable Integer id) {
+        Jogo jogo = jogoService.getJogoPorId(id);
         if (jogo == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogo " + id + " não encontrado");
         }
-        return jogo;
+        return new JogoDTO(jogo);
     }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -77,4 +74,16 @@ public class JogoController {
     public Page<Jogo> getJogosRecentes(@RequestParam(defaultValue = "5") int qtd, Pageable pageable) {
         return jogoService.getTopJogos(qtd);
     }
+
+    @PostMapping("/{id}/comentarios")
+    public ResponseEntity<String> adicionarComentario(@PathVariable Integer id, @RequestBody Avaliacao avaliacao) {
+        Jogo jogo = jogoService.getJogos(id);
+        if (jogo == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogo " + id + " não encontrado");
+        }
+        jogo.adicionarComentario(avaliacao);
+        jogoService.salvarJogo(jogo);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Comentário adicionado com sucesso");
+    }
+
 }

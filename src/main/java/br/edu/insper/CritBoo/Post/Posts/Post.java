@@ -1,5 +1,6 @@
 package br.edu.insper.CritBoo.Post.Posts;
 
+import br.edu.insper.CritBoo.Jogo.Jogos.Jogo;
 import br.edu.insper.CritBoo.Usuario.Usuarios.Usuario;
 import jakarta.persistence.*;
 
@@ -20,6 +21,10 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "id_jogo", nullable = false)
+    private Jogo jogo;
 
     public Integer getId() {
         return id;
@@ -46,6 +51,14 @@ public class Post {
     }
 
     public void setData(LocalDateTime data) {
-        this.data = data; // ou LocalDateTime.now() se quiser definir automaticamente
+        this.data = data;
+    }
+
+    public Jogo getJogo() {
+        return jogo;
+    }
+
+    public void setJogo(Jogo jogo) {
+        this.jogo = jogo;
     }
 }

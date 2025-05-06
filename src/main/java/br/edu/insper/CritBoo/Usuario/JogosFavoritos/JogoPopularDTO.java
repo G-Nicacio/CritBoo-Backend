@@ -1,4 +1,4 @@
-package br.edu.insper.CritBoo.Jogo.Jogos;
+package br.edu.insper.CritBoo.Usuario.JogosFavoritos;
 
 public class JogoPopularDTO {
     private Integer id;

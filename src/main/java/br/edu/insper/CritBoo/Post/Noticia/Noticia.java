@@ -1,5 +1,6 @@
 package br.edu.insper.CritBoo.Post.Noticia;
 
+import br.edu.insper.CritBoo.Jogo.Jogos.Jogo;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,13 @@ public class Noticia {
     @Column(nullable = false)
     private String fonte;
 
+    @ManyToOne
+    @JoinColumn(name = "id_jogo", nullable = false)
+    private Jogo jogo;
+
+    public int getId() {
+        return id;
+    }
 
     public String getTitulo() {
         return titulo;
@@ -54,8 +62,11 @@ public class Noticia {
         this.fonte = fonte;
     }
 
-    public Integer getId() {
-        return id;
+    public Jogo getJogo() {
+        return jogo;
     }
 
+    public void setJogo(Jogo jogo) {
+        this.jogo = jogo;
+    }
 }
