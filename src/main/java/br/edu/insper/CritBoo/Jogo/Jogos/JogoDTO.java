@@ -14,12 +14,14 @@ public class JogoDTO {
     private LocalDate lancamentoJogo;
     private EstudioDTO estudio;
     private List<CategoriaDTO> categorias;
+    private String imagem;
 
     public JogoDTO(Jogo jogo) {
         this.id = jogo.getId();
         this.nomeJogo = jogo.getNomeJogo();
         this.descricaoJogo = jogo.getDescricaoJogo();
         this.lancamentoJogo = jogo.getLancamentoJogo();
+        this.imagem = jogo.getImagem();
         this.estudio = new EstudioDTO(jogo.getEstudio());
         this.categorias = jogo.getCategorias().stream()
                 .map(CategoriaDTO::new)
@@ -45,6 +47,8 @@ public class JogoDTO {
     public EstudioDTO getEstudio() {
         return estudio;
     }
+
+    public String getImagem(){ return imagem; }
 
     public List<CategoriaDTO> getCategorias() {
         return categorias;
