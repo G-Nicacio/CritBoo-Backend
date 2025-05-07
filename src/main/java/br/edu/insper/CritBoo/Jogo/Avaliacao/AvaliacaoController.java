@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -37,36 +38,38 @@ public class AvaliacaoController {
     }
 
     @PostMapping("/")
-    public Avaliacao registrarAvaliacoes(@RequestBody Avaliacao avaliacao) {
-        if (avaliacao == null) {
+    public Avaliacao registrarAvaliacoes(@RequestBody AvaliacaoDTO dto) {
+        if (dto == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A avaliação não pode ser nula");
         }
 
-
-        Usuario usuario = usuarioService.getUsuario(avaliacao.getUsuario().getId());
+        Usuario usuario = usuarioService.getUsuario(dto.getUsuarioId());
         if (usuario == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
         }
 
-        Jogo jogo = jogoService.getJogos(avaliacao.getJogo().getId());
+        Jogo jogo = jogoService.getJogos(dto.getJogoId());
         if (jogo == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogo não encontrado");
         }
 
-        if (avaliacao.getComentario() == null || avaliacao.getComentario().isEmpty()) {
+        if (dto.getComentario() == null || dto.getComentario().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comentário não pode ser vazio");
         }
-        if (avaliacao.getNota() == null) {
+
+        if (dto.getNota() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nota é obrigatória");
         }
 
-        System.out.println("Avaliação recebida: " + avaliacao.getJogo().getId());
-        avaliacao.setUsuario(avaliacao.getUsuario());
-        avaliacao.setJogo(avaliacao.getJogo());
+        Avaliacao avaliacao = new Avaliacao();
+        avaliacao.setComentario(dto.getComentario());
+        avaliacao.setNota(dto.getNota());
+        avaliacao.setUsuario(usuario);
+        avaliacao.setJogo(jogo);
+        avaliacao.setDataAvaliacao(java.time.LocalDateTime.now());
 
-        avaliacaoService.registrarAvaliacao(avaliacao);
 
-        return avaliacao;
+        return avaliacaoService.registrarAvaliacao(avaliacao);
     }
 
     @DeleteMapping("/{id}")
